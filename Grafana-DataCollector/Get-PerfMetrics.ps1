@@ -1,10 +1,13 @@
-﻿<# Hyper-V Performance Counter to check the bottleneck
+﻿#Requires -Module Influx
+
+<# Hyper-V Performance Counter to check the bottleneck
 Reference URL:
 http://wiki.webperfect.ch/index.php?title=Hyper-V:_Performance_(Counters)
 https://docs.microsoft.com/en-us/windows-server/administration/performance-tuning/role/hyper-v-server/detecting-virtualized-environment-bottlenecks
 #>
 
-$Config = Import-PowerShellDataFile -Path ".\Metrics-Config.psd1"
+#$Config = Import-PowerShellDataFile -Path ".\Metrics-Config.psd1"
+$Config = Import-PowerShellDataFile -Path "$PSScriptRoot\Metrics-Config.psd1"
 
 Function Get-PerfMetrics{
     [CmdletBinding()]
@@ -14,8 +17,9 @@ Function Get-PerfMetrics{
         [String[]]$Counter
     )
     Begin{
-        $DefaultEAP = $ErrorActionPreference        
-        $Metrics    = @{}
+        $DefaultEAP            = $ErrorActionPreference
+        $ErrorActionPreference = 'SilentlyContinue'      
+        $Metrics               = @{}
     }
     Process{        
         Foreach($item in $Counter){
@@ -23,7 +27,7 @@ Function Get-PerfMetrics{
             $Sample = (Get-Counter -Counter $item -ComputerName $ComputerName).CounterSamples
             If ($Sample){
                 Foreach($value in $Sample){
-                    $Path        = $($value.Path) -Replace [regex]::Escape("\\$ComputerName\"),""
+                    $Path        = $($value.Path) -Replace [regex]::Escape("\\$ComputerName\"),"" -Replace " ",""
                     $CookedValue = $value.CookedValue
                     
                     Write-Verbose "$Path - $CookedValue"                    
