@@ -4,6 +4,7 @@
     Database    = 'hyperv'
     Interval    = 5 #Adjust this according to your counter
     Counter = @(
+        '\Processor Information(_total)\% Processor Time'
         '\Hyper-V Hypervisor Logical Processor(_total)\% Total Run Time',
         '\Hyper-V Hypervisor Virtual Processor(_total)\% Total Run Time',
         '\Hyper-V Hypervisor Root Virtual Processor(_total)\% Total Run Time',        
