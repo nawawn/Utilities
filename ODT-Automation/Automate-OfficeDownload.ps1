@@ -12,7 +12,7 @@
     }
 }
 
-Function Download-LatestOfice{
+Function Download-LatestOffice{
     Param(
         [Parameter()]
         $WorkingDir    = (Resolve-Path -Path $PSScriptRoot),
@@ -43,4 +43,4 @@ Function Download-LatestOfice{
         Start-Process @Proc -Wait -NoNewWindow
     }    
 }
-Download-LatestOfice -Verbose
+Download-LatestOffice -Verbose
