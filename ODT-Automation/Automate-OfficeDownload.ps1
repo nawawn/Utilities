@@ -12,15 +12,35 @@
     }
 }
 
-#Automate latest version of office download
-$OfficeFolder  = ".\Office"
-$LatestVersion = Get-MS365Version
-$LocalVersion  = (Get-ChildItem $OfficeFolder -Directory | Select -ExpandProperty Name) -as [Version]
-
-If ($LatestVersion -gt $LocalVersion){
-    #Remove-Item $OfficeFolder -Force    
-    $FilePath   = 'setup.exe'
-    $Argument   = '/download Config.xml'
-    $WorkingDir = $PSScriptRoot
-    Start-Process -FilePath $FilePath -ArgumentList $Argument -WorkingDirectory $WorkingDir -Wait
+Function Download-LatestOfice{
+    Param(
+        [Parameter()]
+        $WorkingDir    = (Resolve-Path -Path $PSScriptRoot),
+        $XmlConfigFile = 'download-config.xml'
+    )
+    Begin{        
+        $OfficeFolder  = Join-Path -Path $WorkingDir -ChildPath 'Office'
+        $LatestVersion = Get-MS365Version
+        $LocalVersion  = (Get-ChildItem "$OfficeFolder\Data" -Directory | Select -ExpandProperty Name) -as [Version]
+    }
+    Process{
+        If (Test-Path -Path "$WorkingDir\$XmlConfigFile"){
+            Write-Warning "Unable to locate the XML config file."
+            Return
+        }
+        If ($LatestVersion -gt $LocalVersion){
+            If (Test-Path -Path $OfficeFolder){
+                Write-Verbose "Removing the older version..."
+                Remove-Item $OfficeFolder -Recurse -Force                
+            }
+        }        
+        $Proc = @{
+            FilePath     = Resolve-Path "$WorkingDir\Setup.exe"
+            ArgumentList = ("/download $XmlConfigFile")
+            WorkingDirectory = $WorkingDir
+        }
+        Write-Verbose "Downloading the new office release..."
+        Start-Process @Proc -Wait -NoNewWindow
+    }    
 }
+Download-LatestOfice -Verbose
