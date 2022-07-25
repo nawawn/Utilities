@@ -59,7 +59,6 @@ Function Deploy-IntuneWinApp{
                 Write-Warning "$App - Failed to create the detection Rule"
                 Continue
             }
-
             Write-Verbose "$App - Creating the Application on Intune" 
             $NewApp = Add-IntuneWin32App -DisplayName $App -FilePath $Config[$App].FilePath -Description $Config[$App].Description `
                         -Publisher $Config[$App].Publisher -InstallExperience $Config[$App].InstallExp `
@@ -72,7 +71,6 @@ Function Deploy-IntuneWinApp{
                 Write-Warning "$App - Failed to create the application on Intune"
                 Continue
             }
-
             Write-Verbose "$App - Assigning the Group and Intent"
             If ($Config[$App].Assignment.Group){
                 $AssignGroup = $($Config[$App].Assignment.Group)
@@ -91,8 +89,6 @@ Function Deploy-IntuneWinApp{
             $AssignGroup   = $null
             $AllUsers      = $null
             $AllDevices    = $null            
-        }
-    
+        }    
     }
-
 }
