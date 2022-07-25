@@ -35,7 +35,7 @@
         Assignment = @{
             Group = @{
                 Include = $true
-                GroupID = '6388083c-6a27-4dcd-a96d-80e8c9d3324d'
+                GroupID = 'guid-for-group-id-here'
                 Intent  = 'available'
             }           
         }
@@ -58,7 +58,7 @@
         Assignment = @{
             Group = @{
                 Include = $true
-                GroupID = '5b4ec678-c1fd-4f89-9338-91b28493f5b9'
+                GroupID = 'guid-for-group-id-here'
                 Intent  = 'required'
             }
             AllUsers = @{
