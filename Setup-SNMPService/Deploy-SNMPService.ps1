@@ -73,24 +73,17 @@ Function Set-SNMPTrap{
         $Index = (Get-Item -Path $Path -ErrorAction SilentlyContinue).Property.Count
         If($Index -ge 1){
             $Index++
-            $TrapParam = @{
-                Path  = $Path
-                Key   = $Index
-                Value = $Destination
-                Type  = 'String'
-            }
-            Update-Registry @TrapParam
         }
         Else{
             $Index = 1
-            $TrapParam = @{
-                Path  = $Path
-                Key   = $Index
-                Value = $Destination
-                Type  = 'String'
-            }
-            Update-Registry @TrapParam
         }
+        $TrapParam = @{
+            Path  = $Path
+            Key   = $Index
+            Value = $Destination
+            Type  = 'String'
+        }
+        Update-Registry @TrapParam
     }
 }
 
